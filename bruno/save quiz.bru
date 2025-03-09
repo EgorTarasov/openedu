@@ -1,0 +1,18 @@
+meta {
+  name: save quiz
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/collect
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "data": "<html></html>",
+    "url": "https://openedu.ru"
+  }
+}

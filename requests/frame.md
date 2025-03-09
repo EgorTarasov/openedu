@@ -1,0 +1,16 @@
+```sh
+curl 'https://courses.openedu.ru/xblock/block-v1:misis+SAFETY+spring_2025+type@vertical+block@8f52a031dea046d0b36d45de853a8524?show_title=0&show_bookmark_button=0&recheck_access=1&view=student_view' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'Accept-Language: en-US,en;q=0.9' \
+  -H 'Connection: keep-alive' \
+  -b 'edxloggedin=true; edx-user-info="{\"version\": 1\054 \"username\": \"misis_f23_asu_186\"\054 \"header_urls\": {\"logout\": \"https://courses.openedu.ru/logout\"\054 \"account_settings\": \"https://courses.openedu.ru/account/settings\"\054 \"learner_profile\": \"https://courses.openedu.ru/u/misis_f23_asu_186\"\054 \"resume_block\": \"https://courses.openedu.ru/courses/course-v1:misis+PHL+spring_2025/jump_to/block-v1:misis+PHL+spring_2025+type@videoxblock+block@videoxblock62\"}\054 \"user_image_urls\": {\"full\": \"https://cdn2.openedu.ru/static/images/profiles/default_500.4215dbe8010f.png\"\054 \"large\": \"https://cdn2.openedu.ru/static/images/profiles/default_120.4a5e0900098e.png\"\054 \"medium\": \"https://cdn2.openedu.ru/static/images/profiles/default_50.3455a6581573.png\"\054 \"small\": \"https://cdn2.openedu.ru/static/images/profiles/default_30.deee7287e843.png\"}}"; openedx-language-preference=en; csrftoken=4TpjMapiaXhq7ZLqhkltYqp3TXLRFHIgKo1kfYMNwOe3LN8WZswmNMRe4UHjXa7E; sessionid=1|uibqdsnoh107rsndnu8l8u7p7lgvv3u4|5V6JL7HKcHGc|IjVhNmEwNzQzNWE5OTI4MWE0NGFiZGM3ZTU4OGE3ODM3ZWJiOGFhYTU1NWJkM2FiODEyNzU4ZjgyMDFlZWM5YTYi:1trF4W:6GU4OTFE-YTH1VCW4mV-9oaFhRU; edx-jwt-cookie-header-payload=eyJhbGciOiJSUzUxMiIsImtpZCI6Im9wZW5lZHgifQ.eyJhdWQiOiAib3BlbmVkeCIsICJleHAiOiAxNzQxNTIzNTY1LCAiaWF0IjogMTc0MTUyMzM4NSwgImlzcyI6ICJodHRwczovL2NvdXJzZXMub3BlbmVkdS5ydS9vYXV0aDIiLCAicHJlZmVycmVkX3VzZXJuYW1lIjogIm1pc2lzX2YyM19hc3VfMTg2IiwgInNjb3BlcyI6IFsidXNlcl9pZCIsICJlbWFpbCIsICJwcm9maWxlIl0sICJ2ZXJzaW9uIjogIjEuMi4wIiwgInN1YiI6ICJmNWYxMzliZjQ0MzI0NWRhYjNhNGUxMzliNDYwNTI5NyIsICJmaWx0ZXJzIjogWyJ1c2VyOm1lIl0sICJpc19yZXN0cmljdGVkIjogZmFsc2UsICJlbWFpbF92ZXJpZmllZCI6IHRydWUsICJ1c2VyX2lkIjogMzU5NjExOSwgImVtYWlsIjogIm0yMTA0MTA1QGVkdS5taXNpcy5ydSIsICJuYW1lIjogIlx1MDQxNVx1MDQzM1x1MDQzZVx1MDQ0MCBcdTA0MjJcdTA0MzBcdTA0NDBcdTA0MzBcdTA0NDFcdTA0M2VcdTA0MzIiLCAiZmFtaWx5X25hbWUiOiAiXHUwNDIyXHUwNDMwXHUwNDQwXHUwNDMwXHUwNDQxXHUwNDNlXHUwNDMyIiwgImdpdmVuX25hbWUiOiAiXHUwNDE1XHUwNDMzXHUwNDNlXHUwNDQwIiwgImFkbWluaXN0cmF0b3IiOiBmYWxzZSwgInN1cGVydXNlciI6IGZhbHNlfQ; edx-jwt-cookie-signature=M9x9U_3OEk7_rKUo_WPXFj3LDRME4DMA0YVXvvq2kPscqrxf3kLEzuMyPpuM0gg992VQXfZpfRWl4dD3-75gbLkQGim27frZlRw6JLM3oP3TbE009IgWpp_bwzjsxeaLc_pBWmdfoheCwgPVzLQhpik9CJN6zIbglsHT6aZtiBXh5wDQJYh0F_EwtCFjcDCAR3GSNNBVfN_zwSDtlHRyvyAS5kBT29jswb9G8vLVl1EJm7zjFGOzJNtGLICKSfW1KBokjreibeobAwv0bfr_ujv6jgDCqe0oblHdNKGkD06-odeQYKmox3oR04aA-tv8Z4jk6f-6vUPO0beS4xUtfA' \
+  -H 'Sec-Fetch-Dest: document' \
+  -H 'Sec-Fetch-Mode: navigate' \
+  -H 'Sec-Fetch-Site: none' \
+  -H 'Sec-Fetch-User: ?1' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"'
+```
