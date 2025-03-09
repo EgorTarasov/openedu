@@ -6,4 +6,4 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL}
     ports:
-      - "${OPENEDU_PORT}:80"
+      - "${OPENEDU_PORT}:8080"

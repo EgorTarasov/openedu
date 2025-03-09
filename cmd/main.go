@@ -48,7 +48,7 @@ func main() {
 
 	app.Post("/collect", h.CollectHandler)
 
-	if err := app.Listen(":3000"); err != nil {
+	if err := app.Listen(":8080"); err != nil {
 		panic(err)
 	}
 }
