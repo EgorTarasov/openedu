@@ -50,7 +50,7 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 
 
 ## TODO:
-- [ ] fix payload from extension to match one in server
+- [x] fix payload from extension to match one in server
 - [ ] add metadata into payload such as title from a page or name of the test
-- [ ] create pipeline for processing html into questions with answers and correct answers
-- [ ] make list endpoint for all available tests and questions
+- [x] create pipeline for processing html into questions with answers and correct answers
+- [x] make list endpoint for all available tests and questions
