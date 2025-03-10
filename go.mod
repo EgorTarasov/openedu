@@ -5,6 +5,7 @@ go 1.23.4
 require (
 	github.com/gofiber/fiber/v2 v2.52.6
 	github.com/jackc/pgx/v5 v5.5.5
+	golang.org/x/net v0.17.0
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12
 )

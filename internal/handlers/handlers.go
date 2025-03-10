@@ -11,5 +11,3 @@ func New(db *gorm.DB) *Handlers {
 		db: db,
 	}
 }
-
-

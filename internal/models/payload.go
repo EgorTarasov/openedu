@@ -3,8 +3,9 @@ package models
 import "time"
 
 type Payload struct {
-	Data string `json:"data"`
-	URL  string `json:"url"`
+	Data  string `json:"data"`
+	URL   string `json:"url"`
+	Title string `json:"title"`
 }
 
 type DBPayload struct {

@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"log/slog"
 	"openedu/internal/models"
+	"openedu/internal/parser"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -15,7 +17,16 @@ func (h *Handlers) CollectHandler(c *fiber.Ctx) error {
 		})
 	}
 
-	h.db.Create(&models.DBPayload{Payload: payload})
+	// TODO: create parsing function
+	go func() {
+		h.db.Create(&models.DBPayload{Payload: payload})
+		problems := parser.ParseContent(payload.Data)
+		for _, v := range problems {
+			p := models.FromProblem(v)
+			h.db.Save(&p)
+		}
+		slog.Info("saved all problems")
+	}()
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "Data received successfully",

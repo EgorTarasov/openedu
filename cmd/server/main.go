@@ -61,7 +61,13 @@ func connectDB(dsn string) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	return gorm.Open(postgres.New(postgres.Config{
+
+	db, err := gorm.Open(postgres.New(postgres.Config{
 		Conn: pg,
 	}), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+	models.Migrate(db)
+	return db, err
 }

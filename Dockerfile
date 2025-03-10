@@ -14,7 +14,7 @@ COPY . .
 RUN rm -rf extension/ bruno/
 
 # Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -o /app/main cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/main cmd/server/main.go
 
 # Runner stage
 FROM alpine:3.21
