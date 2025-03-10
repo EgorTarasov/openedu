@@ -1,0 +1,168 @@
+<h1>Openedu search</h1>
+
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search questions...">
+    <div id="results" class="results-container"></div>
+</div>
+
+<style>
+    .search-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    #searchInput {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .results-container {
+        margin-top: 20px;
+    }
+
+    .result-item {
+        padding: 15px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+
+    .result-title {
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 8px;
+        font-size: 18px;
+    }
+
+    .result-question {
+        margin-bottom: 12px;
+        color: #34495e;
+    }
+
+    .result-course {
+        font-size: 14px;
+        color: #7f8c8d;
+        margin-top: 8px;
+    }
+
+    .result-choices {
+        margin: 12px 0;
+    }
+
+    .choice {
+        padding: 5px 10px;
+        margin: 2px 0;
+        background-color: #ecf0f1;
+        border-radius: 3px;
+    }
+
+    .choice-correct {
+        background-color: #d5f5e3;
+        border-left: 3px solid #27ae60;
+    }
+
+    .match-score {
+        float: right;
+        background-color: #3498db;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+    }
+
+    .answer-section {
+        margin-top: 10px;
+        font-weight: bold;
+        color: #16a085;
+    }
+</style>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const resultsDiv = document.getElementById('results');
+
+    // Debounce function to limit API calls while typing
+    function debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    // Format the result item HTML
+    function formatResultItem(item, query) {
+        console.log(item)
+        // Display the choices, highlighting correct ones if available
+        const choicesHTML = item.Choices && item.Choices.length > 0
+            ? `<div class="result-choices">
+          ${item.Choices.map(choice =>
+                `<div class="choice ${choice.IsCorrect ? 'choice-correct' : ''}">
+              ${choice.Text}
+              ${choice.IsCorrect ? ' ✓' : ''}
+            </div>`
+            ).join('')}
+         </div>`
+            : '';
+
+        // Show answers if available
+        const answersHTML = item.Answer && item.Answer.length > 0
+            ? `<div class="answer-section">
+                <p>Correct answer: ${item.Answer.join(', ')}</p>
+              </div>`
+            : '';
+
+        // Show the problem ID if available
+        const problemId = item.ProblemID ? `<span class="problem-id">(ID: ${item.ProblemID})</span>` : '';
+
+        return `
+      <div class="result-item">
+        <div class="result-title">${item.ProblemTitle || 'Untitled Problem'} ${problemId}</div>
+        <div class="result-question">${item.Question}</div>
+        ${choicesHTML}
+        ${answersHTML}
+      </div>
+    `;
+    }
+
+    // Perform the search when input changes
+    const performSearch = debounce(async (query) => {
+        if (query) {
+            try {
+                resultsDiv.innerHTML = '<p>Searching...</p>';
+                const response = await fetch(`/q?q=${encodeURIComponent(query)}`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Display the results
+                resultsDiv.innerHTML = '';
+                if (data.length > 0) {
+                    data.forEach(item => {
+                        resultsDiv.innerHTML += formatResultItem(item, query);
+                    });
+                } else {
+                    resultsDiv.innerHTML = '<p>No results found</p>';
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = '<p>Error fetching results: ' + error.message + '</p>';
+                console.error('Search error:', error);
+            }
+        } else {
+            resultsDiv.innerHTML = '';
+        }
+    }, 300); // 300ms debounce
+
+    searchInput.addEventListener('input', function () {
+        const query = this.value.trim();
+        performSearch(query);
+    });
+</script>

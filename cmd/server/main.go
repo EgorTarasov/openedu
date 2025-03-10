@@ -11,6 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/template/html/v2"
 	_ "github.com/jackc/pgx/v5"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -18,15 +19,16 @@ import (
 
 func main() {
 	slog.Info("starting application...")
-	// Get database connection string from environment variable or use default
 	dsn := os.Getenv("DATABASE_URL")
 	if dsn == "" {
-		// Fall back to default if environment variable is not set
 		panic("Warning: DATABASE_URL not set, using default connection string")
 	}
 	slog.Info("got database url", "url", dsn)
 
+	renderEngine := html.New("./views", ".html")
+
 	app := fiber.New(fiber.Config{
+		Views:     renderEngine,
 		BodyLimit: 1024 * 1024 * 1024,
 	})
 	app.Use(recover.New(recover.Config{EnableStackTrace: true}))
@@ -45,8 +47,9 @@ func main() {
 	models.Migrate(db)
 
 	h := handlers.New(db)
-
+	app.Get("/", h.Index)
 	app.Post("/collect", h.CollectHandler)
+	app.Get("/q", h.Search)
 
 	if err := app.Listen(":8080"); err != nil {
 		panic(err)
