@@ -27,6 +27,9 @@ RUN apk --no-cache add ca-certificates
 # Copy the binary from builder
 COPY --from=builder /app/main .
 
+# Copy views directory for HTML templates
+COPY --from=builder /app/views ./views
+
 # Expose application port (adjust as needed)
 EXPOSE 8080
 
