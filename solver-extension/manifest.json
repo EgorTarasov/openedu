@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "OpenEdu questions",
-    "version": "1.0.0",
-    "description": "extension with answers for some courses",
+    "name": "Нейромозг",
+    "version": "1.0.1",
+    "description": "Позволяет сократить время на решение курса по философии",
     "action": {
         "default_popup": "popup.html",
         "default_icon": {
