@@ -1,7 +1,7 @@
 // Main page script
 console.log('Main page script loaded');
 
-const api = "http://localhost:8080"
+const api = "https://openedu.larek.tech"
 
 function extractQuestions(html) {
     // Create a DOM parser to work with the HTML string
@@ -79,10 +79,10 @@ function extractQuestions(html) {
 function insertHtmlIntoUnit(html) {
     // Find the element with class 'unit'
     const unitElement = document.querySelector('.notification-tray-divider');
-    
+
     if (unitElement) {
         // Insert the HTML content into the unit element
-        unitElement.innerHTML = unitElement.innerHTML +  html;
+        unitElement.innerHTML = unitElement.innerHTML + html;
         console.log('HTML content inserted into unit element');
     } else {
         console.error('Element with class "unit" not found');
@@ -94,89 +94,77 @@ function insertHtmlIntoUnit(html) {
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     // Only process messages from iframes
     if (message.fromIframe) {
-        // Create a unique key for this iframe content
-        const storageKey = 'iframeContent_' + message.url;
 
-        // Check if we've already processed this iframe URL
-        const previouslySent = localStorage.getItem(storageKey);
+        const questionsData = extractQuestions(message.problemDiv);
+        console.log('Extracted questions:', questionsData);
 
-        if (previouslySent) {
-            console.log('Data from this iframe URL already sent to server:', message.url);
-            // Send response to indicate we've already processed this
-            sendResponse({ status: 'already_sent' });
-        } else {
-            // This is a new iframe content we haven't processed
-            // console.log('Sending new data from iframe URL:', message.problemDiv);
-            const questionsData = extractQuestions(message.problemDiv);
-            console.log('Extracted questions:', questionsData);
+        // Create an array to hold all promises for fetching answers
+        const fetchPromises = [];
+        const answers = [];
 
-            // Create an array to hold all promises for fetching answers
-            const fetchPromises = [];
-            const answers = [];
-
-            // Create a promise for each question
-            questionsData.questions.forEach((question) => {
-                console.log(question.question);
-                const promise = fetch(`${api}/q?q=${question.question}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json"
+        // Create a promise for each question
+        questionsData.questions.forEach((question) => {
+            console.log(question.question);
+            const promise = fetch(`${api}/q?q=${question.question}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.length === 0) {
+                        console.log('No data found for question:', question.question);
+                        return null;
                     }
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.length === 0) {
-                            console.log('No data found for question:', question.question);
-                            return null;
-                        }
-                        console.log('Found data:', data);
-                        const top = data[0];
-                        // Save the answer with its question number for sorting later
-                        const questionNumber = parseInt(question.question.match(/^(\d+)\./)?.[1] || "0");
-                        answers.push({
-                            questionNumber: questionNumber,
-                            question: top.Question,
-                            answer: top.Answer
-                        });
-                    })
-                    .catch(err => {
-                        console.error('Error fetching answer:', err);
+                    console.log('Found data:', data);
+                    const top = data[0];
+                    // Save the answer with its question number for sorting later
+                    const questionNumber = parseInt(question.question.match(/^(\d+)\./)?.[1] || "0");
+                    answers.push({
+                        questionNumber: questionNumber,
+                        question: top.Question,
+                        answer: top.Answer
                     });
+                })
+                .catch(err => {
+                    console.error('Error fetching answer:', err);
+                });
 
-                fetchPromises.push(promise);
-            });
+            fetchPromises.push(promise);
+        });
 
-            // Wait for all fetches to complete
-            Promise.all(fetchPromises)
-                .then(() => {
-                    // Sort answers by question number
-                    answers.sort((a, b) => a.questionNumber - b.questionNumber);
+        // Wait for all fetches to complete
+        Promise.all(fetchPromises)
+            .then(() => {
+                // Sort answers by question number
+                answers.sort((a, b) => a.questionNumber - b.questionNumber);
 
-                    // Create HTML for all answers
-                    let allAnswersHtml = '<div class="openedu-answers">';
-                    answers.forEach(item => {
-                        allAnswersHtml += `
+                // Create HTML for all answers
+                let allAnswersHtml = '<div class="openedu-answers">';
+                answers.forEach(item => {
+                    allAnswersHtml += `
                             <div class="openedu-answer">
                                 <h6>Question: ${item.question}</h6>
                                 <p>Answer: ${item.answer}</p>
                             </div>
                         `;
-                    });
-                    allAnswersHtml += '</div>';
-
-                    // Insert all answers at once
-                    if (answers.length > 0) {
-                        insertHtmlIntoUnit(allAnswersHtml);
-                    }
-
-                    // Mark this URL as processed
-                    localStorage.setItem(storageKey, 'true');
-                    sendResponse({ status: 'success' });
                 });
+                allAnswersHtml += '</div>';
 
-            // Return true to indicate we'll send response asynchronously
-            return true;
-        }
+                // Insert all answers at once
+                if (answers.length > 0) {
+                    insertHtmlIntoUnit(allAnswersHtml);
+                }
+
+                // Mark this URL as processed
+                localStorage.setItem(storageKey, 'true');
+                sendResponse({ status: 'success' });
+            });
+
+        // Return true to indicate we'll send response asynchronously
+        return true;
+
     }
 
     return true;
