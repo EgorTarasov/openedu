@@ -1,0 +1,53 @@
+{
+    "manifest_version": 3,
+    "name": "OpenEdu questions",
+    "version": "1.0.0",
+    "description": "extension with answers for some courses",
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png"
+        }
+    },
+    "background": {
+        "service_worker": "bg.js"
+    },
+    "content_scripts": [
+        {
+            "js": [
+                "main.js",
+                "sub.js"
+            ],
+            "matches": [
+                "https://courses.openedu.ru/*",
+                "https://apps.openedu.ru/*"
+            ],
+            "all_frames": true
+        },
+        {
+            "js": [
+                "sub.js"
+            ],
+            "matches": [
+                "https://courses.openedu.ru/*",
+                "https://apps.openedu.ru/*"
+            ],
+            "all_frames": true
+        }
+    ],
+    "permissions": [
+        "activeTab",
+        "tabs"
+    ],
+    "host_permissions": [
+        "https://courses.openedu.ru/*",
+        "https://apps.openedu.ru/*"
+    ],
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    }
+}
